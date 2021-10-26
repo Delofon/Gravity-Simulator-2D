@@ -64,7 +64,7 @@ namespace GravitySimulator2D
             //foreach(CelestialBody body in bodies)
             for(int i = 0; i < bodies.Count; i++)
             {
-                bodies[i].CheckCollisions(ref bodies);
+                bodies[i].CheckCollisions(bodies);
             }
 
             for(int i = 0; i < bodies.Count; i++)

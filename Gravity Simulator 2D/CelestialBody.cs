@@ -54,7 +54,7 @@ namespace GravitySimulator2D
         }
     }
 
-    class CelestialBody : IDisposable
+    class CelestialBody
     {
         float mass;
 
@@ -169,31 +169,30 @@ namespace GravitySimulator2D
             position += velocity * timeStep;
         }
 
-        public void CheckCollisions(ref List<CelestialBody> bodies)
+        public void CheckCollisions(List<CelestialBody> bodies)
         {
             //foreach(CelestialBody body in bodies)
             for(int i = 0; i < bodies.Count; i++)
             {
                 if(bodies[i] != this)
                 {
+                    CelestialBody survivingBody;
+                    CelestialBody dyingBody;
+
                     if(Vector2.Distance(position, bodies[i].position) <= size / 2 + bodies[i].size / 2)
                     {
                         if(bodies[i].size < size / 2)
                         {
-                            bodies[i].Dispose();
                             bodies.Remove(bodies[i]);
                         }
                         else if(size < bodies[i].size)
                         {
                             bodies.Remove(this);
-                            Dispose();
                         }
                         else
                         {
-                            bodies[i].Dispose();
                             bodies.Remove(bodies[i]);
                             bodies.Remove(this);
-                            Dispose();
                         }
                     }
                 }
@@ -203,11 +202,6 @@ namespace GravitySimulator2D
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position - new Vector2(texture.Width / 2, texture.Height / 2), Color.White);
-        }
-
-        public void Dispose()
-        {
-            
         }
     }
 }
