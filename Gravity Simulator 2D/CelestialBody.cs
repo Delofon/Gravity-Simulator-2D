@@ -27,28 +27,22 @@ namespace GravitySimulator2D
 
         public class BodyTextureSettings
         {
-            public bool ocean;
-            public float oceanThreshold;
+            public Gradient gradient;
 
-            public Color baseColour;
-            public Color oceanColour;
-
-            public int oceanSeed;
+            public int seed;
             public float noiseScale;
 
             public BodyTextureSettings(Color baseColour)
             {
-                this.ocean = false;
-                this.baseColour = baseColour;
+                this.gradient = new Gradient();
+                this.gradient.AddKeyColour(0f, baseColour);
+                this.gradient.AddKeyColour(1f, baseColour);
             }
 
-            public BodyTextureSettings(float oceanThreshold, Color baseColour, Color oceanColour, int oceanSeed = 0, float noiseScale = 8f)
+            public BodyTextureSettings(Gradient gradient, int seed = 0, float noiseScale = 8f)
             {
-                this.ocean = true;
-                this.oceanThreshold = oceanThreshold;
-                this.baseColour = baseColour;
-                this.oceanColour = oceanColour;
-                this.oceanSeed = oceanSeed;
+                this.gradient = gradient;
+                this.seed = seed;
                 this.noiseScale = noiseScale;
             }
         }
@@ -80,13 +74,7 @@ namespace GravitySimulator2D
 
             Color[] colours = new Color[size * size];
 
-            if (size > 1) colours = CalculateCircle(size, textureSettings.baseColour);
-            else colours[0] = textureSettings.baseColour;
-
-            if(textureSettings.ocean)
-            {
-                colours = FillWithOcean(colours, size, textureSettings);
-            }
+            colours = Texturize(size, textureSettings);
 
             texture.SetData(colours);
         }
@@ -101,38 +89,34 @@ namespace GravitySimulator2D
 
         }
 
-        private static Color[] CalculateCircle(int size, Color colour)
+        private static Color[] Texturize(int size, BodySettings.BodyTextureSettings textureSettings)
         {
             Color[] colours = new Color[size * size];
+
+            for (int x = 0; x < size; x++)
+            {
+                for (int y = 0; y < size; y++)
+                {
+                    float dist = Vector2.Distance(new Vector2(size / 2, size / 2), new Vector2(x, y));
+                    if (dist <= size / 2 || dist <= size / 2) colours[x + y * size] = Color.White;
+                }
+            }
+
+            Perlin2D perlin = new Perlin2D(textureSettings.seed);
 
             for(int x = 0; x < size; x++)
             {
                 for(int y = 0; y < size; y++)
                 {
-                    //if (Math.Pow(Math.Cos(Utility_Basic.map(x, 0, width, -1f, 1f)), 2) <= 1 && Math.Pow(Math.Sin(Utility_Basic.map(y, 0, height, -1f, 1f)), 2) <= Math.Pow(height/2, 2)) colours[x + y * width] = colour;
-                    //if (Math.Pow(Math.Cos(Utility_Basic.map(x, 0, width, -1f, 1f)), 2) <= width && Math.Pow(Math.Sin(Utility_Basic.map(y, 0, height, -1f, 1f)), 2) <= height)
-                    float dist = Vector2.Distance(new Vector2(size / 2, size / 2), new Vector2(x, y));
-                    if (dist <= size / 2 || dist <= size / 2) colours[x + y * size] = colour;
+                    if (colours[x + y * size] != Color.White)
+                        continue;
+
+                    float sample = PerlinNoiseHandler.Sample(perlin, x, y, size, size, textureSettings.noiseScale, 0, 0, 8, .3f) + .5f;
+                    colours[x + y * size] = textureSettings.gradient.Evaluate(sample);
                 }
             }
 
             return colours;
-        }
-
-        private static Color[] FillWithOcean(Color[] circle, int size, BodySettings.BodyTextureSettings textureSettings)
-        {
-            Perlin2D perlin = new Perlin2D(textureSettings.oceanSeed);
-
-            for(int x = 0; x < size; x++)
-            {
-                for(int y = 0; y < size; y++)
-                {
-                    float sample = PerlinNoiseHandler.Sample(perlin, x, y, size, size, textureSettings.noiseScale, 0, 0, 8, .3f) + .5f;
-                    if (circle[x + y * size] == textureSettings.baseColour && sample < textureSettings.oceanThreshold) circle[x + y * size] = textureSettings.oceanColour;
-                }
-            }
-
-            return circle;
         }
 
         public void SetVisualizerSteps(int steps)

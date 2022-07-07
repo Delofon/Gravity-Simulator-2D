@@ -12,7 +12,7 @@ namespace GravitySimulator2D
         public static GraphicsDeviceManager graphics;
     }
 
-    public class GravitySimulator2D : Microsoft.Xna.Framework.Game
+    public class GravitySimulator2D : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;

@@ -16,5 +16,14 @@ namespace GravitySimulator2D
         {
             return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
         }
+
+        public static float lerp(float from, float to, float time)
+        {
+            return from + (to - from) * time;
+        }
+        public static float invLerp(float from, float to, float value)
+        {
+            return (value - from) / (to - from);
+        }
     }
 }
