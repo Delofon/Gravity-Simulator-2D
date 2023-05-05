@@ -31,7 +31,7 @@ namespace GravitySimulator2D
 
         private Texture2D constructStars(int size, int seed)
         {
-            Texture2D stars = new Texture2D(ThingiesProvider.graphics.GraphicsDevice, size, size);
+            Texture2D stars = new Texture2D(GravitySimulator2D.graphics.GraphicsDevice, size, size);
 
             Color[] colours = new Color[size * size];
 

@@ -70,7 +70,7 @@ namespace GravitySimulator2D
 
         public Texture2D GetTexture(int resolution)
         {
-            Texture2D gradient = new Texture2D(ThingiesProvider.graphics.GraphicsDevice, resolution, 1);
+            Texture2D gradient = new Texture2D(GravitySimulator2D.graphics.GraphicsDevice, resolution, 1);
             Color[] data = new Color[resolution];
 
             for (int i = 0; i < resolution; i++)

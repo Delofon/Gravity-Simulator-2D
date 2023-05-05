@@ -4,18 +4,23 @@ using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+using GravitySimulator2D.InputHandlers;
 
 namespace GravitySimulator2D
 {
     public class GravitySimulator2D : Game
     {
-        public GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteBatch hud;
         Universe universe;
         SpriteFont Calibri;
         Camera2d camera;
         //Stars stars;
+
+        InputHandler ih;
 
         bool isEnabled = false;
 
@@ -36,9 +41,9 @@ namespace GravitySimulator2D
         {
             List<CelestialBody> bodies = new List<CelestialBody>();
 
-            bodies.Add(new CelestialBody(Vector2.Zero, 128, 50, Vector2.Zero, new BodySettings.BodyTextureSettings(0.26f, Color.Yellow, Color.Brown, 43983, 32)));
-            bodies.Add(new CelestialBody(new Vector2(128, 0), 16, 4, -Vector2.UnitY * 2.2f, new BodySettings.BodyTextureSettings(0.47f, Color.Blue, Color.Red, 83473)));
-            bodies.Add(new CelestialBody(new Vector2(412, 0), 22, 6, -Vector2.UnitY * 1.4f, new BodySettings.BodyTextureSettings(0.47f, Color.Gray, Color.Aqua, 65323, 3)));
+            bodies.Add(new CelestialBody(Vector2.Zero, 128, 3000f, Vector2.Zero, new BodySettings.BodyTextureSettings(0.26f, Color.Yellow, Color.Brown, 43983, 32)));
+            bodies.Add(new CelestialBody(new Vector2(128, 0), 16, 4, -Vector2.UnitY * 4.2f, new BodySettings.BodyTextureSettings(0.47f, Color.Blue, Color.Red, 83473)));
+            bodies.Add(new CelestialBody(new Vector2(412, 0), 22, 6, -Vector2.UnitY * 2.4f, new BodySettings.BodyTextureSettings(0.47f, Color.Gray, Color.Aqua, 65323, 3)));
             bodies.Add(new CelestialBody(new Vector2(800, 0), 8, 3, -Vector2.UnitY * 1.24f, new BodySettings.BodyTextureSettings(Color.Aquamarine)));
 
             return bodies;
@@ -82,24 +87,24 @@ namespace GravitySimulator2D
             List<CelestialBody> bodies = new List<CelestialBody>();
             //Celestial bodies go in here
 
-            //bodies = System1();
-
+            bodies = System1();
             //bodies = ThreeBodies();
-
-            bodies = System2();
+            //bodies = System2();
 
             return bodies;
         }
 
         protected override void Initialize()
         {
-            ThingiesProvider.graphics = graphics;
             camera = new Camera2d();
 
             graphics.PreferredBackBufferWidth = 1600;
             graphics.PreferredBackBufferHeight = 900;
 
             graphics.ApplyChanges();
+
+            ih = new InputHandler(this);
+            ih.AddInputHandler(new PCInputHandler());
 
             base.Initialize();
         }
@@ -113,27 +118,29 @@ namespace GravitySimulator2D
 
         protected override void Update(GameTime gameTime)
         {
-            if (InputHandler.isEscPressed()) Exit();
+            ih.Update();
 
-            if (InputHandler.isZeroPressed() && -1 < universe.getBodies().Count) camera.bodyFocus = -1;
-            if (InputHandler.isOnePressed() && 0 < universe.getBodies().Count) camera.bodyFocus = 0;
-            if (InputHandler.isTwoPressed() && 1 < universe.getBodies().Count) camera.bodyFocus = 1;
-            if (InputHandler.isThreePressed() && 2 < universe.getBodies().Count) camera.bodyFocus = 2;
-            if (InputHandler.isFourPressed() && 3 < universe.getBodies().Count) camera.bodyFocus = 3;
-            if (InputHandler.isFivePressed() && 4 < universe.getBodies().Count) camera.bodyFocus = 4;
-            if (InputHandler.isSixPressed() && 5 < universe.getBodies().Count) camera.bodyFocus = 5;
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.Escape)) Exit();
+
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D0) &&-1 < universe.getBodies().Count) camera.bodyFocus =-1;
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D1) && 0 < universe.getBodies().Count) camera.bodyFocus = 0;
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D2) && 1 < universe.getBodies().Count) camera.bodyFocus = 1;
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D3) && 2 < universe.getBodies().Count) camera.bodyFocus = 2;
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D4) && 3 < universe.getBodies().Count) camera.bodyFocus = 3;
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D5) && 4 < universe.getBodies().Count) camera.bodyFocus = 4;
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D6) && 5 < universe.getBodies().Count) camera.bodyFocus = 5;
 
             //isEnabled = InputHandler.detectSingleKeyPress(Keys.Space, isEnabled);
 
-            if (InputHandler.isSpacePressed()) isEnabled = !isEnabled;
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.Space)) isEnabled = !isEnabled;
 
-            if (InputHandler.isLeftPressed()) camera.offset = InputHandler.msGetPos() - new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
+            if (ih.GetInputHandler<PCInputHandler>().GetMButtonUp(MouseButtons.Left)) camera.offset = ih.GetMousePos() - new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
 
-            changeMouseWheel = InputHandler.msGetWheel() - lastMouseWheel;
+            changeMouseWheel = ih.GetInputHandler<PCInputHandler>().GetMWheel() - lastMouseWheel;
 
             camera.Zoom += (float)changeMouseWheel / 120 / 10 * camera.Zoom;
 
-            lastMouseWheel = InputHandler.msGetWheel();
+            lastMouseWheel = ih.GetInputHandler<PCInputHandler>().GetMWheel();
 
             if (universe == null)
             {
@@ -155,8 +162,8 @@ namespace GravitySimulator2D
             //    universe.setStep(0);
             //}
 
-            if (InputHandler.isPlusPressed()) universe.setStep(universe.getStep() + .25f);
-            if (InputHandler.isMinusPressed() && universe.getStep() > 0) universe.setStep(universe.getStep() - .25f);
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.OemPlus)) universe.setStep(universe.getStep() + .25f);
+            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.OemMinus) && universe.getStep() > 0) universe.setStep(universe.getStep() - .25f);
 
             if (camera.bodyFocus >= 0)
                 camera.Pos = universe.getBodies()[camera.bodyFocus].getPos() + camera.offset / camera.Zoom;
@@ -186,7 +193,7 @@ namespace GravitySimulator2D
             hud.DrawString(Calibri, "Camera Position X: " + camera.Pos.X, new Vector2(0f, curPosY += step), Color.White);
             hud.DrawString(Calibri, "Camera Position Y: " + camera.Pos.Y, new Vector2(0f, curPosY += step), Color.White);
             hud.DrawString(Calibri, "Camera Zoom: " + camera.Zoom, new Vector2(0f, curPosY += step), Color.White);
-            hud.DrawString(Calibri, "Mouse Wheel: " + InputHandler.msGetWheel(), new Vector2(0f, curPosY += step), Color.White);
+            hud.DrawString(Calibri, "Mouse Wheel: " + ih.GetInputHandler<PCInputHandler>().GetMWheel(), new Vector2(0f, curPosY += step), Color.White);
             //hud.DrawString(Calibri, "Last Key Press: " + InputHandler.lastKeyPressed(), new Vector2(0f, curPosY += step), Color.White);
             hud.End();
 

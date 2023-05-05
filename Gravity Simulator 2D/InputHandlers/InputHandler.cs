@@ -13,7 +13,7 @@ namespace GravitySimulator2D.InputHandlers
         private List<IInputHandler> inputHandlers;
         private List<KeyBind> keyBinds;
 
-        private List<string> input_evenzxts;
+        private List<string> input_events;
 
         private GravitySimulator2D game;
 
@@ -104,8 +104,8 @@ namespace GravitySimulator2D.InputHandlers
             }
 
             Vector2 mousePos = pcih.GetMousePos();
-            mousePos.X /= game.graphics.PreferredBackBufferWidth;
-            mousePos.Y /= game.graphics.PreferredBackBufferHeight;
+            //mousePos.X /= GravitySimulator2D.graphics.PreferredBackBufferWidth;
+            //mousePos.Y /= GravitySimulator2D.graphics.PreferredBackBufferHeight;
 
             return pcih.GetMousePos();
         }
@@ -119,22 +119,22 @@ namespace GravitySimulator2D.InputHandlers
 
             if (pcih == null)
             {
-                Logger.Error("ih: Cannot set mouse position: no PCInputHandler defined.");
+                //Logger.Error("ih: Cannot set mouse position: no PCInputHandler defined.");
                 return;
             }
             if(!MathUtil.InRange(0, 1, newPosition.X))
             {
-                Logger.Error($"ih: Cannot set mouse position: new mouse position X is not normalized ({newPosition.X})");
+                //Logger.Error($"ih: Cannot set mouse position: new mouse position X is not normalized ({newPosition.X})");
                 return;
             }
             if(!MathUtil.InRange(0, 1, newPosition.Y))
             {
-                Logger.Error($"ih: Cannot set mouse position: new mouse position Y is not normalized ({newPosition.Y})");
+                //Logger.Error($"ih: Cannot set mouse position: new mouse position Y is not normalized ({newPosition.Y})");
                 return;
             }
 
-            newPosition.X *= game.graphics.PreferredBackBufferWidth;
-            newPosition.Y *= game.graphics.PreferredBackBufferHeight;
+            //newPosition.X *= GravitySimulator2D.graphics.PreferredBackBufferWidth;
+            //newPosition.Y *= GravitySimulator2D.graphics.PreferredBackBufferHeight;
 
             pcih.SetMousePos(newPosition);
         }

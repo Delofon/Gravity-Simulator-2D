@@ -127,6 +127,11 @@ namespace GravitySimulator2D.InputHandlers
             else
                 return false;
         }
+
+        public int GetMWheel()
+        {
+            return curMState.ScrollWheelValue;
+        }
     }
 
     public enum MouseButtons

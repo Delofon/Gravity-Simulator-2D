@@ -39,6 +39,17 @@ namespace GravitySimulator2D
                 this.gradient.AddKeyColour(1f, baseColour);
             }
 
+            public BodyTextureSettings(float oceanThreshold, Color landColour, Color oceanColour, int seed = 0, float noiseScale = 8f)
+            {
+                gradient = new Gradient();
+                gradient.AddKeyColour(0.0f, oceanColour);
+                gradient.AddKeyColour(oceanThreshold, landColour);
+                gradient.AddKeyColour(1.0f, landColour);
+
+                this.seed = seed;
+                this.noiseScale = noiseScale;
+            }
+
             public BodyTextureSettings(Gradient gradient, int seed = 0, float noiseScale = 8f)
             {
                 this.gradient = gradient;
@@ -70,7 +81,7 @@ namespace GravitySimulator2D
             this.position = position;
             velocity = initVel;
 
-            texture = new Texture2D(ThingiesProvider.graphics.GraphicsDevice, size, size);
+            texture = new Texture2D(GravitySimulator2D.graphics.GraphicsDevice, size, size);
 
             Color[] colours = new Color[size * size];
 
