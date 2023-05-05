@@ -25,6 +25,11 @@ namespace GravitySimulator2D
         {
             return (value - from) / (to - from);
         }
+
+        public static Vector3 lerp(Vector3 from, Vector3 to, float time)
+        {
+            return new Vector3(lerp(from.X, to.X, time),lerp(from.Y, to.Y, time),lerp(from.Z, to.Z, time));
+        }
     }
 
     public struct Circle

@@ -122,11 +122,6 @@ namespace GravitySimulator2D.InputHandlers
                 //Logger.Error("ih: Cannot set mouse position: no PCInputHandler defined.");
                 return;
             }
-            if(!MathUtil.InRange(0, 1, newPosition.X))
-            {
-                //Logger.Error($"ih: Cannot set mouse position: new mouse position X is not normalized ({newPosition.X})");
-                return;
-            }
             if(!MathUtil.InRange(0, 1, newPosition.Y))
             {
                 //Logger.Error($"ih: Cannot set mouse position: new mouse position Y is not normalized ({newPosition.Y})");

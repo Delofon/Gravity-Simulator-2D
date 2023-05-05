@@ -26,7 +26,7 @@ namespace GravitySimulator2D
 
         public void Draw(Camera2d camera, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, -new Vector2(rectangle.Width, rectangle.Height) / 2, rectangle, Color.White);
+            spriteBatch.Draw(texture, -new Vector2(rectangle.Width, rectangle.Height) / 2 + camera.Pos * .95f, rectangle, Color.White);
         }
 
         private Texture2D constructStars(int size, int seed)
@@ -41,6 +41,7 @@ namespace GravitySimulator2D
             {
                 for(int y = 0; y < size; y++)
                 {
+                    if((x + y * size < size * size) && ((x) + (y + 1) * size < size * size) && ((x + 1) + (y) * size < size * size) && ((x + 1) + (y + 1) * size < size * size))
                     if (rand.NextDouble() < 0.001)
                     {
                         colours[x + y * size] = Color.White;

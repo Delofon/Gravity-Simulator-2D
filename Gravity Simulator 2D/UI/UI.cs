@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace GravitySimulator2D
+namespace GravitySimulator2D.UI
 {
-    class Gui
+    public class UI
     {
         
     }

@@ -18,7 +18,7 @@ namespace GravitySimulator2D
         Universe universe;
         SpriteFont Calibri;
         Camera2d camera;
-        //Stars stars;
+        Stars stars;
 
         InputHandler ih;
 
@@ -87,9 +87,9 @@ namespace GravitySimulator2D
             List<CelestialBody> bodies = new List<CelestialBody>();
             //Celestial bodies go in here
 
-            bodies = System1();
+            //bodies = System1();
             //bodies = ThreeBodies();
-            //bodies = System2();
+            bodies = System2();
 
             return bodies;
         }
@@ -105,6 +105,8 @@ namespace GravitySimulator2D
 
             ih = new InputHandler(this);
             ih.AddInputHandler(new PCInputHandler());
+
+            stars = new Stars(512);
 
             base.Initialize();
         }
@@ -177,7 +179,7 @@ namespace GravitySimulator2D
         {
             GraphicsDevice.Clear(Color.Black);
 
-            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, null, null, null, camera.get_transformation(graphics));
+            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, null, null, null, camera.get_transformation(graphics));
             //stars.Draw(camera, spriteBatch);
             //spriteBatch.End();
 
