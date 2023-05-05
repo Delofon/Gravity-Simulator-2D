@@ -7,14 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GravitySimulator2D
 {
-    public static class ThingiesProvider
-    {
-        public static GraphicsDeviceManager graphics;
-    }
-
     public class GravitySimulator2D : Game
     {
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteBatch hud;
         Universe universe;
