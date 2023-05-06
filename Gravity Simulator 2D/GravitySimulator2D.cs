@@ -72,7 +72,22 @@ namespace GravitySimulator2D
             bodies.Add(new CelestialBody(Vector2.UnitX * sunSize * 3, sunSize - 10, Vector2.UnitY * 47, 42, new BodySettings.BodyTextureSettings(0.26f, Color.Yellow, Color.Brown, 355467, 32)));
             bodies.Add(new CelestialBody(Vector2.UnitX * sunSize * 7, 32, -Vector2.UnitY * 23, 10, new BodySettings.BodyTextureSettings(0.26f, Color.Brown, Color.Red, 329876)));
             bodies.Add(new CelestialBody(Vector2.UnitX * sunSize * 11, 52, -Vector2.UnitY * 10, 15, new BodySettings.BodyTextureSettings(Color.Gray)));
-            bodies.Add(new CelestialBody(Vector2.UnitX * sunSize * 15, 16, -Vector2.UnitY * 5, 5, new BodySettings.BodyTextureSettings(0.5f, Color.Green, Color.Blue, 958346, 3)));
+
+            Gradient terra = new Gradient();
+            terra.AddKeyColour(0f, Color.Blue);
+            terra.AddKeyColour(.25f, Color.Blue);
+            terra.AddKeyColour(.5f, Color.Green);
+            terra.AddKeyColour(.7f, Color.Green);
+            terra.AddKeyColour(.8f, Color.Brown);
+            terra.AddKeyColour(.9f, Color.Gray);
+            terra.AddKeyColour(1f, Color.White);
+            System.IO.FileStream file = new System.IO.FileStream("./terra.png", System.IO.FileMode.Create);
+            terra.GetTexture(128).SaveAsPng(file, 128, 1);
+            file.Close();
+            file.Dispose();
+            bodies.Add(new CelestialBody(Vector2.UnitX * sunSize * 15, 16, -Vector2.UnitY * 5, 5, new BodySettings.BodyTextureSettings(terra, 958346, 3)));
+            //bodies.Add(new CelestialBody(Vector2.UnitX * sunSize * 15, 16, -Vector2.UnitY * 5, 5, new BodySettings.BodyTextureSettings(0.5f, Color.Green, Color.Blue, 958346, 3)));
+
             bodies.Add(new CelestialBody(ggPos, 128, -Vector2.UnitY * 1, 21, new BodySettings.BodyTextureSettings(0.26f, Color.GreenYellow, Color.Yellow, 987347)));
             bodies.Add(new CelestialBody(ggPos + Vector2.UnitX * 150, 10, -Vector2.UnitY * 27, 3, new BodySettings.BodyTextureSettings(Color.DarkGray)));
             bodies.Add(new CelestialBody(ggPos + Vector2.UnitX * 210, 8, -Vector2.UnitY * 22, 2, new BodySettings.BodyTextureSettings(Color.DarkGray)));

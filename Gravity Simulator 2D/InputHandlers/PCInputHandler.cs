@@ -86,8 +86,6 @@ namespace GravitySimulator2D.InputHandlers
 
                 default:
                     throw new ArgumentException("The provided mouse button code is invalid.");
-                    //throw new Exception("What the?! Something happened that caused the input check to check for a non-existing mouse button.");
-                    // this is an impossible situation, only some SEU shit or wrong method calls may cause this to happen
             }
         }
 

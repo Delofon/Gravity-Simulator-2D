@@ -56,13 +56,8 @@ namespace GravitySimulator2D
             Vector3 rightColour = GetValueFromDictionary(rightKey).ToVector3();
 
             // Lerp
-            //Vector3 leftInvLerp = leftColour * Utility_Basic.invLerp(rightKey, leftKey, time);
-            //Vector3 rightInvLerp = rightColour * Utility_Basic.invLerp(leftKey, rightKey, time);
 
-            Vector3 output = Utility_Basic.lerp(leftColour, rightColour, time);
-
-            // Add resulting values together and that will be your color in normalized values
-            //Vector3 output = leftInvLerp + rightInvLerp;
+            Vector3 output = Utility_Basic.lerp(leftColour, rightColour, Utility_Basic.invLerp(leftKey, rightKey, time));
 
             // Denormalize
             Color outputColour = new Color(output);

@@ -172,8 +172,8 @@ namespace GravitySimulator2D
             {
                 if(bodies[i] != this)
                 {
-                    CelestialBody survivingBody;
-                    CelestialBody dyingBody;
+                    //CelestialBody survivingBody;
+                    //CelestialBody dyingBody;
 
                     if(Vector2.Distance(position, bodies[i].position) <= size / 2 + bodies[i].size / 2)
                     {
