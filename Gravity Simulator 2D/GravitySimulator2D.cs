@@ -106,7 +106,7 @@ namespace GravitySimulator2D
             ih = new InputHandler(this);
             ih.AddInputHandler(new PCInputHandler());
 
-            stars = new Stars(512);
+            stars = new Stars(1024, 1, .0005, .999f);
 
             base.Initialize();
         }
@@ -173,37 +173,37 @@ namespace GravitySimulator2D
             //camera.Zoom = .5f;
 
             // Endless
-            const float max_pos = 10000f;
+            const float max_pos = 50000f;
             if(camera.Pos.X > max_pos)
             {
+                camera._pos.X   -= max_pos;
                 foreach(CelestialBody body in universe.getBodies())
                 {
-                    camera._pos.X   -= max_pos;
                     body.position.X -= max_pos;
                 }
             }
             else if(camera.Pos.X < -max_pos)
             {
+                camera._pos.X   += max_pos;
                 foreach(CelestialBody body in universe.getBodies())
                 {
-                    camera._pos.X   += max_pos;
                     body.position.X += max_pos;
                 }
             }
 
             if(camera.Pos.Y > max_pos)
             {
+                camera._pos.Y   -= max_pos;
                 foreach(CelestialBody body in universe.getBodies())
                 {
-                    camera._pos.Y   -= max_pos;
                     body.position.Y -= max_pos;
                 }
             }
             else if(camera.Pos.Y < -max_pos)
             {
+                camera._pos.Y   += max_pos;
                 foreach(CelestialBody body in universe.getBodies())
                 {
-                    camera._pos.Y   += max_pos;
                     body.position.Y += max_pos;
                 }
             }
@@ -215,9 +215,9 @@ namespace GravitySimulator2D
         {
             GraphicsDevice.Clear(Color.Black);
 
-            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, null, null, null, camera.get_transformation(graphics));
-            //stars.Draw(camera, spriteBatch);
-            //spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, null, null, null, camera.get_transformation(graphics));
+            stars.Draw(camera, spriteBatch);
+            spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.get_transformation(graphics));
             universe.Draw(spriteBatch);

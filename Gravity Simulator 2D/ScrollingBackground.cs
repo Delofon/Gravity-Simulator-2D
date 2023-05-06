@@ -13,10 +13,13 @@ namespace GravitySimulator2D
         Texture2D texture;
         Rectangle rectangle;
 
-        public Stars(int size)
+        float parallax;
+
+        public Stars(int size, int starSize, double proportion, float parallax)
         {
-            texture = constructStars(size, 9342876);
-            rectangle = new Rectangle(0, 0, size * 1000, size * 1000);
+            texture = constructStars(size, starSize, 9342876, (proportion / (starSize * starSize)));
+            rectangle = new Rectangle(0, 0, size * 2000, size * 2000);
+            this.parallax = parallax;
         }
 
         public void Update(Camera2d camera)
@@ -26,10 +29,11 @@ namespace GravitySimulator2D
 
         public void Draw(Camera2d camera, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, -new Vector2(rectangle.Width, rectangle.Height) / 2 + camera.Pos * .95f, rectangle, Color.White);
+            // TODO: Make scale also depend on parallax
+            spriteBatch.Draw(texture, camera.Pos * parallax, rectangle, Color.White, 0f, Vector2.One * rectangle.Size.ToVector2() / 2, 1f, SpriteEffects.None, 0f);
         }
 
-        private Texture2D constructStars(int size, int seed)
+        private Texture2D constructStars(int size, int starSize, int seed, double randomchance)
         {
             Texture2D stars = new Texture2D(GravitySimulator2D.graphics.GraphicsDevice, size, size);
 
@@ -41,13 +45,22 @@ namespace GravitySimulator2D
             {
                 for(int y = 0; y < size; y++)
                 {
-                    if((x + y * size < size * size) && ((x) + (y + 1) * size < size * size) && ((x + 1) + (y) * size < size * size) && ((x + 1) + (y + 1) * size < size * size))
-                    if (rand.NextDouble() < 0.001)
+                    bool draw = true;
+
+                    if(rand.NextDouble() >= randomchance) continue;
+
+                    if(draw)
                     {
-                        colours[x + y * size] = Color.White;
-                        colours[(x) + (y + 1) * size] = Color.White;
-                        colours[(x + 1) + (y) * size] = Color.White;
-                        colours[(x + 1) + (y + 1) * size] = Color.White;
+                        for (int dx = 0; dx < starSize; dx++)
+                        {
+                            for (int dy = 0; dy < starSize; dy++)
+                            {
+                                int xpdx = x + dx;
+                                int ypdy = y + dy;
+                                WrapIfNeeded(ref xpdx, ref ypdy);
+                                colours[xpdx + ypdy * size] = Color.White;
+                            }
+                        }
                     }
                 }
             }
@@ -55,6 +68,15 @@ namespace GravitySimulator2D
             stars.SetData(colours);
 
             return stars;
+
+            void WrapIfNeeded(ref int x, ref int y)
+            {
+                while(x >= size) x -= size;
+                while(x < 0)     x += size;
+
+                while(y >= size) y -= size;
+                while(y < 0)     y += size;
+            }
         }
     }
 }

@@ -164,6 +164,7 @@ namespace GravitySimulator2D
             position += velocity * timeStep;
         }
 
+        // TODO: Move outside of CelestialBody
         public void CheckCollisions(List<CelestialBody> bodies)
         {
             //foreach(CelestialBody body in bodies)
