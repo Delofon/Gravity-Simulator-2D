@@ -65,8 +65,8 @@ namespace GravitySimulator2D
 
         public int size;
 
-        Vector2 position;
-        Vector2 velocity;
+        public Vector2 position;
+        public Vector2 velocity;
 
         //OrbitVisualizer visualizer;
 

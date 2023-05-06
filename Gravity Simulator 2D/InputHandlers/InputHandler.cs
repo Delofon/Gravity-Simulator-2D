@@ -11,29 +11,19 @@ namespace GravitySimulator2D.InputHandlers
     public sealed class InputHandler
     {
         private List<IInputHandler> inputHandlers;
-        private List<KeyBind> keyBinds;
-
-        private List<string> input_events;
-
         private GravitySimulator2D game;
 
         public InputHandler(GravitySimulator2D game)
         {
             inputHandlers = new List<IInputHandler>();
-            keyBinds = new List<KeyBind>();
-
-            input_events = new List<string>();
-
             this.game = game;
         }
 
         public void Update()
         {
-            input_events.Clear();
-            KeyBind[] keyBindsArr = GetKeyBinds();
             foreach(IInputHandler ih in inputHandlers)
             {
-                input_events.AddRange(ih.HandleInput(keyBindsArr)); // TODO: shit
+                ih.HandleInput(null); // TODO: shit
             }
         }
 
@@ -58,37 +48,7 @@ namespace GravitySimulator2D.InputHandlers
         {
             return (T)inputHandlers.Find(x => x.GetType() == typeof(T));
         }
-
-        public void AddKeyBind(KeyBind keyBind)
-        {
-            if(keyBinds.Exists(x => x.name == keyBind.name))
-            {
-                //Logger.Error($"ih: the KeyBind with requested \"{keyBind.name}\" already exists.");
-                return;
-            }
-            keyBinds.Add(keyBind);
-        }
-        public bool RemoveKeyBind(KeyBind keybind)
-        {
-            return keyBinds.Remove(keybind);
-        }
-        public bool RemoveKeyBind(string name)
-        {
-            return keyBinds.Remove(GetKeyBind(name));
-        }
-        public KeyBind GetKeyBind(string name)
-        {
-            return keyBinds.Find(x => x.name == name);
-        }
-        public KeyBind[] GetKeyBinds()
-        {
-            return keyBinds.ToArray();
-        }
-
-        public bool GetInputEvent(string input_event)
-        {
-            return input_events.Contains(input_event);
-        }
+        
         /// <summary>
         /// Gets raw normalized mouse position from the engine.
         /// </summary>

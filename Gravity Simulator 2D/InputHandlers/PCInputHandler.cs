@@ -26,28 +26,7 @@ namespace GravitySimulator2D.InputHandlers
             prevMState = curMState;
             curMState = Mouse.GetState();
 
-            List<string> bind_events = new List<string>();
-
-            foreach(KeyBind keyBind in keyBinds)
-            {
-                if (keyBind.key == Keys.None)
-                    continue;
-
-                switch(keyBind.holdType)
-                {
-                    case HoldType.Held:
-                        if (GetKeyHeld(keyBind.key)) bind_events.Add(keyBind.name);
-                        break;
-                    case HoldType.Down:
-                        if (GetKeyDown(keyBind.key)) bind_events.Add(keyBind.name);
-                        break;
-                    case HoldType.Up:
-                        if (GetKeyUp  (keyBind.key)) bind_events.Add(keyBind.name);
-                        break;
-                }
-            }
-
-            return bind_events;
+            return null;
         }
 
         public bool GetKeyDown(Keys key)

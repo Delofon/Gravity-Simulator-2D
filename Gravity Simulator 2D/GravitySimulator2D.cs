@@ -172,6 +172,42 @@ namespace GravitySimulator2D
             else camera.Pos = camera.offset;
             //camera.Zoom = .5f;
 
+            // Endless
+            const float max_pos = 10000f;
+            if(camera.Pos.X > max_pos)
+            {
+                foreach(CelestialBody body in universe.getBodies())
+                {
+                    camera._pos.X   -= max_pos;
+                    body.position.X -= max_pos;
+                }
+            }
+            else if(camera.Pos.X < -max_pos)
+            {
+                foreach(CelestialBody body in universe.getBodies())
+                {
+                    camera._pos.X   += max_pos;
+                    body.position.X += max_pos;
+                }
+            }
+
+            if(camera.Pos.Y > max_pos)
+            {
+                foreach(CelestialBody body in universe.getBodies())
+                {
+                    camera._pos.Y   -= max_pos;
+                    body.position.Y -= max_pos;
+                }
+            }
+            else if(camera.Pos.Y < -max_pos)
+            {
+                foreach(CelestialBody body in universe.getBodies())
+                {
+                    camera._pos.Y   += max_pos;
+                    body.position.Y += max_pos;
+                }
+            }
+
             base.Update(gameTime);
         }
 
