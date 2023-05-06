@@ -136,27 +136,28 @@ namespace GravitySimulator2D
         protected override void Update(GameTime gameTime)
         {
             ih.Update();
+            PCInputHandler pcih = ih.GetInputHandler<PCInputHandler>();
 
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.Escape)) Exit();
+            if (pcih.GetKeyUp(Keys.Escape)) Exit();
 
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D0) &&-1 < universe.getBodies().Count) camera.bodyFocus =-1;
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D1) && 0 < universe.getBodies().Count) camera.bodyFocus = 0;
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D2) && 1 < universe.getBodies().Count) camera.bodyFocus = 1;
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D3) && 2 < universe.getBodies().Count) camera.bodyFocus = 2;
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D4) && 3 < universe.getBodies().Count) camera.bodyFocus = 3;
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D5) && 4 < universe.getBodies().Count) camera.bodyFocus = 4;
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D6) && 5 < universe.getBodies().Count) camera.bodyFocus = 5;
+            if (pcih.GetKeyUp(Keys.D0) &&-1 < universe.getBodies().Count) camera.bodyFocus =-1;
+            if (pcih.GetKeyUp(Keys.D1) && 0 < universe.getBodies().Count) camera.bodyFocus = 0;
+            if (pcih.GetKeyUp(Keys.D2) && 1 < universe.getBodies().Count) camera.bodyFocus = 1;
+            if (pcih.GetKeyUp(Keys.D3) && 2 < universe.getBodies().Count) camera.bodyFocus = 2;
+            if (pcih.GetKeyUp(Keys.D4) && 3 < universe.getBodies().Count) camera.bodyFocus = 3;
+            if (pcih.GetKeyUp(Keys.D5) && 4 < universe.getBodies().Count) camera.bodyFocus = 4;
+            if (pcih.GetKeyUp(Keys.D6) && 5 < universe.getBodies().Count) camera.bodyFocus = 5;
 
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.Space)) isEnabled = !isEnabled;
+            if (pcih.GetKeyUp(Keys.Space)) isEnabled = !isEnabled;
 
             // TODO: Implement panning
-            if (ih.GetInputHandler<PCInputHandler>().GetMButtonUp(MouseButtons.Left)) camera.offset += ih.GetMousePos() - new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
+            if (pcih.GetMButtonUp(MouseButtons.Left)) camera.offset += (ih.GetMousePos() - new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2)) / camera.Zoom;
 
-            changeMouseWheel = ih.GetInputHandler<PCInputHandler>().GetMWheel() - lastMouseWheel;
+            changeMouseWheel = pcih.GetMWheel() - lastMouseWheel;
 
             camera.Zoom += (float)changeMouseWheel / 120 / 10 * camera.Zoom;
 
-            lastMouseWheel = ih.GetInputHandler<PCInputHandler>().GetMWheel();
+            lastMouseWheel = pcih.GetMWheel();
 
             if (universe == null)
             {
@@ -178,8 +179,8 @@ namespace GravitySimulator2D
             //    universe.setStep(0);
             //}
 
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.OemPlus)) universe.setStep(universe.getStep() + .25f);
-            if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.OemMinus) && universe.getStep() > 0) universe.setStep(universe.getStep() - .25f);
+            if (pcih.GetKeyUp(Keys.OemPlus)) universe.setStep(universe.getStep() + .25f);
+            if (pcih.GetKeyUp(Keys.OemMinus) && universe.getStep() > 0) universe.setStep(universe.getStep() - .25f);
 
             if (camera.bodyFocus >= 0)
                 camera.Pos = universe.getBodies()[camera.bodyFocus].getPos() + camera.offset;
@@ -187,7 +188,7 @@ namespace GravitySimulator2D
             //camera.Zoom = .5f;
 
             // Endless
-            const float max_pos = 50000f;
+            const float max_pos = 51200f;
             if(camera.Pos.X > max_pos)
             {
                 camera._pos.X -= max_pos;
