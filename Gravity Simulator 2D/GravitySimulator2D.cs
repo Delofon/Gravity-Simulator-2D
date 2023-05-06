@@ -81,10 +81,10 @@ namespace GravitySimulator2D
             terra.AddKeyColour(.8f, Color.Brown);
             terra.AddKeyColour(.9f, Color.Gray);
             terra.AddKeyColour(1f, Color.White);
-            System.IO.FileStream file = new System.IO.FileStream("./terra.png", System.IO.FileMode.Create);
-            terra.GetTexture(128).SaveAsPng(file, 128, 1);
-            file.Close();
-            file.Dispose();
+            //System.IO.FileStream file = new System.IO.FileStream("./terra.png", System.IO.FileMode.Create);
+            //terra.GetTexture(128).SaveAsPng(file, 128, 1);
+            //file.Close();
+            //file.Dispose();
             bodies.Add(new CelestialBody(Vector2.UnitX * sunSize * 15, 16, -Vector2.UnitY * 5, 5, new BodySettings.BodyTextureSettings(terra, 958346, 3)));
             //bodies.Add(new CelestialBody(Vector2.UnitX * sunSize * 15, 16, -Vector2.UnitY * 5, 5, new BodySettings.BodyTextureSettings(0.5f, Color.Green, Color.Blue, 958346, 3)));
 
