@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GravitySimulator2D
 {
+    // TODO: 
     class OrbitVisualizer : CelestialBody
     {
         public int steps;

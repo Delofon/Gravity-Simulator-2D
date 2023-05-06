@@ -147,11 +147,10 @@ namespace GravitySimulator2D
             if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D5) && 4 < universe.getBodies().Count) camera.bodyFocus = 4;
             if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.D6) && 5 < universe.getBodies().Count) camera.bodyFocus = 5;
 
-            //isEnabled = InputHandler.detectSingleKeyPress(Keys.Space, isEnabled);
-
             if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.Space)) isEnabled = !isEnabled;
 
-            if (ih.GetInputHandler<PCInputHandler>().GetMButtonUp(MouseButtons.Left)) camera.offset = ih.GetMousePos() - new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
+            // TODO: Implement panning
+            if (ih.GetInputHandler<PCInputHandler>().GetMButtonUp(MouseButtons.Left)) camera.offset += ih.GetMousePos() - new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
 
             changeMouseWheel = ih.GetInputHandler<PCInputHandler>().GetMWheel() - lastMouseWheel;
 
@@ -165,7 +164,7 @@ namespace GravitySimulator2D
                 universe.setBodies(PopulateUniverse());
             }
 
-            else
+            else if(isEnabled)
             {
                 universe.Update();
             }
@@ -183,7 +182,7 @@ namespace GravitySimulator2D
             if (ih.GetInputHandler<PCInputHandler>().GetKeyUp(Keys.OemMinus) && universe.getStep() > 0) universe.setStep(universe.getStep() - .25f);
 
             if (camera.bodyFocus >= 0)
-                camera.Pos = universe.getBodies()[camera.bodyFocus].getPos() + camera.offset / camera.Zoom;
+                camera.Pos = universe.getBodies()[camera.bodyFocus].getPos() + camera.offset;
             else camera.Pos = camera.offset;
             //camera.Zoom = .5f;
 
@@ -191,7 +190,7 @@ namespace GravitySimulator2D
             const float max_pos = 50000f;
             if(camera.Pos.X > max_pos)
             {
-                camera._pos.X   -= max_pos;
+                camera._pos.X -= max_pos;
                 foreach(CelestialBody body in universe.getBodies())
                 {
                     body.position.X -= max_pos;
@@ -199,7 +198,7 @@ namespace GravitySimulator2D
             }
             else if(camera.Pos.X < -max_pos)
             {
-                camera._pos.X   += max_pos;
+                camera._pos.X += max_pos;
                 foreach(CelestialBody body in universe.getBodies())
                 {
                     body.position.X += max_pos;
@@ -208,7 +207,7 @@ namespace GravitySimulator2D
 
             if(camera.Pos.Y > max_pos)
             {
-                camera._pos.Y   -= max_pos;
+                camera._pos.Y -= max_pos;
                 foreach(CelestialBody body in universe.getBodies())
                 {
                     body.position.Y -= max_pos;
@@ -216,7 +215,7 @@ namespace GravitySimulator2D
             }
             else if(camera.Pos.Y < -max_pos)
             {
-                camera._pos.Y   += max_pos;
+                camera._pos.Y += max_pos;
                 foreach(CelestialBody body in universe.getBodies())
                 {
                     body.position.Y += max_pos;

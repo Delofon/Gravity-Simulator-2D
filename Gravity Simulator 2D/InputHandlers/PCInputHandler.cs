@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GravitySimulator2D.InputHandlers
 {
-    //TODO: Issue #40. Maybe separate mouse input handling from PCInputHandler
     public sealed class PCInputHandler : IInputHandler
     {
         KeyboardState curState;

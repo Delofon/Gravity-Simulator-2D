@@ -22,11 +22,6 @@ namespace GravitySimulator2D
             this.parallax = parallax;
         }
 
-        public void Update(Camera2d camera)
-        {
-
-        }
-
         public void Draw(Camera2d camera, SpriteBatch spriteBatch)
         {
             // TODO: Make scale also depend on parallax
@@ -56,8 +51,12 @@ namespace GravitySimulator2D
                             for (int dy = 0; dy < starSize; dy++)
                             {
                                 int xpdx = x + dx;
+                                while (x >= size) x -= size;
+                                while (x < 0)     x += size;
+
                                 int ypdy = y + dy;
-                                WrapIfNeeded(ref xpdx, ref ypdy);
+                                while (y >= size) y -= size;
+                                while (y < 0)     y += size;
                                 colours[xpdx + ypdy * size] = Color.White;
                             }
                         }
@@ -68,15 +67,6 @@ namespace GravitySimulator2D
             stars.SetData(colours);
 
             return stars;
-
-            void WrapIfNeeded(ref int x, ref int y)
-            {
-                while(x >= size) x -= size;
-                while(x < 0)     x += size;
-
-                while(y >= size) y -= size;
-                while(y < 0)     y += size;
-            }
         }
     }
 }
