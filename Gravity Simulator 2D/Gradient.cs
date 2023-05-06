@@ -26,7 +26,7 @@ namespace GravitySimulator2D
             // If time lands on a key colour, retrieve it
             if (keyColours.ContainsKey(time))
             {
-                return new Color(GetValueFromDictionary(time), Utility_Basic.lerp(0, 255, alpha));
+                return new Color(GetValueFromDictionary(time), MathUtil.Lerp(0, 255, alpha));
             }
 
             // Find previous and next keys
@@ -57,12 +57,12 @@ namespace GravitySimulator2D
 
             // Lerp
 
-            Vector3 output = Utility_Basic.lerp(leftColour, rightColour, Utility_Basic.invLerp(leftKey, rightKey, time));
+            Vector3 output = MathUtil.Lerp(leftColour, rightColour, MathUtil.InvLerp(leftKey, rightKey, time));
 
             // Denormalize
             Color outputColour = new Color(output);
 
-            return new Color(outputColour, Utility_Basic.lerp(0, 255, alpha));
+            return new Color(outputColour, MathUtil.Lerp(0, 255, alpha));
         }
 
         public Texture2D GetTexture(int resolution)
